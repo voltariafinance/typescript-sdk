@@ -2,6 +2,8 @@ export * from "./accounts/client/requests/index.js";
 export * as accounts from "./accounts/index.js";
 export * from "./clients/client/requests/index.js";
 export * as clients from "./clients/index.js";
+export * from "./collections/client/requests/index.js";
+export * as collections from "./collections/index.js";
 export * from "./documents/client/requests/index.js";
 export * as documents from "./documents/index.js";
 export * from "./drawdowns/client/requests/index.js";

@@ -13,12 +13,12 @@ export interface WaterfallResponse {
     date: string;
     /** The status of the waterfall */
     status: Voltaria.WaterfallStatusEnum;
-    /** The cash balance associated with the waterfall */
-    cash_balance?: (string | null) | undefined;
-    /** The currency of the cash balance */
-    cash_balance_currency?: (string | null) | undefined;
-    /** The date of the cash balance */
-    cash_balance_date?: (string | null) | undefined;
+    /** The payment amount recorded for the waterfall */
+    amount?: (string | null) | undefined;
+    /** The currency of the payment */
+    currency?: (string | null) | undefined;
+    /** The date the payment was made */
+    payment_date?: (string | null) | undefined;
     /** The Presigned URL of the file. This is a temporary URL that allows you to download the file. */
     file_url?: (string | null) | undefined;
     /** The date and time when the waterfall was created */

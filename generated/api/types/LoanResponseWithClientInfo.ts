@@ -39,4 +39,8 @@ export interface LoanResponseWithClientInfo {
     data?: (Record<string, unknown> | null) | undefined;
     /** The client details associated with the loan */
     client: Voltaria.ClientBaseInfo;
+    /** Remaining principal for installments with status active or overdue, net of any repayments already made */
+    outstanding_principal?: (string | null) | undefined;
+    /** Remaining amount (principal and interest) for installments with status active or overdue, net of any repayments already made */
+    remaining_amount?: (string | null) | undefined;
 }

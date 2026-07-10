@@ -2,6 +2,7 @@
 
 import { AccountsClient } from "./api/resources/accounts/client/Client.js";
 import { ClientsClient } from "./api/resources/clients/client/Client.js";
+import { CollectionsClient } from "./api/resources/collections/client/Client.js";
 import { DocumentsClient } from "./api/resources/documents/client/Client.js";
 import { DrawdownsClient } from "./api/resources/drawdowns/client/Client.js";
 import { InstallmentsClient } from "./api/resources/installments/client/Client.js";
@@ -26,6 +27,7 @@ export class VoltariaClient {
     protected _clients: ClientsClient | undefined;
     protected _sandbox: SandboxClient | undefined;
     protected _accounts: AccountsClient | undefined;
+    protected _collections: CollectionsClient | undefined;
     protected _documents: DocumentsClient | undefined;
     protected _investors: InvestorsClient | undefined;
     protected _installments: InstallmentsClient | undefined;
@@ -49,6 +51,10 @@ export class VoltariaClient {
 
     public get accounts(): AccountsClient {
         return (this._accounts ??= new AccountsClient(this._options));
+    }
+
+    public get collections(): CollectionsClient {
+        return (this._collections ??= new CollectionsClient(this._options));
     }
 
     public get documents(): DocumentsClient {

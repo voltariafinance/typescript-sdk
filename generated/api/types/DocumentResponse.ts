@@ -23,6 +23,8 @@ export interface DocumentResponse {
     document_date?: (string | null) | undefined;
     /** Optional expiry date of the document */
     expiry_date?: (string | null) | undefined;
+    /** The ID of the associated distribution (coupon), if applicable */
+    distribution_id?: (string | null) | undefined;
     /** The date and time when the document was created */
     created_at: string;
 }

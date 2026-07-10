@@ -29,4 +29,6 @@ export interface ClientAccountResponse {
     address?: (Voltaria.AccountAddress | null) | undefined;
     /** Account status. One of: `pending`, `active`, `passive`. */
     status: Voltaria.AccountStatusEnum;
+    /** Timestamp when the account was created. */
+    created_at: string;
 }

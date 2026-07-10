@@ -3,20 +3,36 @@
 import type * as Voltaria from "../index.js";
 
 export interface ClientUserResponse {
+    /** Unique client user identifier. */
     id: string;
+    /** ID of the partner this user belongs to. */
     partner_id: string;
+    /** ID of the client this user belongs to. */
     client_id: string;
+    /** Email address of the portal user. */
     email: string;
+    /** ID of the role assigned to the user. */
     role_id: string;
+    /** Role assigned to the user. */
     role?: (Voltaria.RoleResponse | null) | undefined;
+    /** Account status. One of: `pending`, `active`, `inactive`. */
     status: Voltaria.ClientUserStatusEnum;
+    /** Whether the user has verified their email address. */
     is_email_verified: boolean;
+    /** KYC verification status of the user. */
     kyc_status: Voltaria.KycStatusEnum;
+    /** First name of the user. */
     first_name?: (string | null) | undefined;
+    /** Last name of the user. */
     last_name?: (string | null) | undefined;
+    /** Phone number of the user. */
     phone?: (string | null) | undefined;
+    /** Whether two-factor authentication is enabled for this user. */
     is_2fa_enabled?: boolean | undefined;
+    /** Whether two-factor authentication is required for this user. */
     is_2fa_required?: boolean | undefined;
+    /** Timestamp when the user was created. */
     created_at: string;
+    /** Timestamp when the user was last updated. */
     updated_at: string;
 }

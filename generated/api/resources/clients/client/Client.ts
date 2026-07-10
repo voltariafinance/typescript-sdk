@@ -686,6 +686,86 @@ export class ClientsClient {
     }
 
     /**
+     * Paginated list of portal users belonging to a client.
+     *
+     * @param {Voltaria.ListClientPortalUsersRequest} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.listClientPortalUsers({
+     *         client_id: "client_id"
+     *     })
+     */
+    public listClientPortalUsers(
+        request: Voltaria.ListClientPortalUsersRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.PaginatedResponseClientUserResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listClientPortalUsers(request, requestOptions));
+    }
+
+    private async __listClientPortalUsers(
+        request: Voltaria.ListClientPortalUsersRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.PaginatedResponseClientUserResponse>> {
+        const { client_id: clientId, page, page_size: pageSize, order_by: orderBy, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            page_size: pageSize,
+            order_by: orderBy,
+            q,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/clients/${core.url.encodePathParam(clientId)}/users`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Voltaria.PaginatedResponseClientUserResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/clients/{client_id}/users");
+    }
+
+    /**
      * Invite a new user to a client's portal account. The invited user will receive an email with a one-time link to set their password. Partner can assign any role: 'owner', 'admin', or 'viewer'.
      *
      * @param {Voltaria.ClientUserInviteRequest} request

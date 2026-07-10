@@ -23,6 +23,236 @@ export class LoansClient {
     }
 
     /**
+     * List loan review requests for your partner account, optionally filtered by loan ID or client ID.
+     *
+     * @param {Voltaria.ListLoanReviewRequestsRequest} request
+     * @param {LoansClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.loans.listLoanReviewRequests()
+     */
+    public listLoanReviewRequests(
+        request: Voltaria.ListLoanReviewRequestsRequest = {},
+        requestOptions?: LoansClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.PaginatedResponseLoanReviewRequestResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listLoanReviewRequests(request, requestOptions));
+    }
+
+    private async __listLoanReviewRequests(
+        request: Voltaria.ListLoanReviewRequestsRequest = {},
+        requestOptions?: LoansClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.PaginatedResponseLoanReviewRequestResponse>> {
+        const { loan_id: loanId, client_id: clientId, page, page_size: pageSize, order_by: orderBy, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            loan_id: loanId,
+            client_id: clientId,
+            page,
+            page_size: pageSize,
+            order_by: orderBy,
+            q,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                "v2/loans/review-requests",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Voltaria.PaginatedResponseLoanReviewRequestResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/loans/review-requests");
+    }
+
+    /**
+     * Ask Voltaria to review a not-yet-disbursed (pending or pre-approved) loan before disbursement.
+     *
+     * @param {Voltaria.LoanReviewRequestCreatePayload} request
+     * @param {LoansClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.ConflictError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.loans.createLoanReviewRequest({
+     *         loan_id: "loan_1234567890abcdef"
+     *     })
+     */
+    public createLoanReviewRequest(
+        request: Voltaria.LoanReviewRequestCreatePayload,
+        requestOptions?: LoansClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.LoanReviewRequestResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__createLoanReviewRequest(request, requestOptions));
+    }
+
+    private async __createLoanReviewRequest(
+        request: Voltaria.LoanReviewRequestCreatePayload,
+        requestOptions?: LoansClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.LoanReviewRequestResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                "v2/loans/review-requests",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: request,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Voltaria.LoanReviewRequestResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 409:
+                    throw new Voltaria.ConflictError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v2/loans/review-requests");
+    }
+
+    /**
+     * Retrieve a specific loan review request by its ID.
+     *
+     * @param {Voltaria.GetLoanReviewRequestRequest} request
+     * @param {LoansClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.loans.getLoanReviewRequest({
+     *         request_id: "request_id"
+     *     })
+     */
+    public getLoanReviewRequest(
+        request: Voltaria.GetLoanReviewRequestRequest,
+        requestOptions?: LoansClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.LoanReviewRequestResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getLoanReviewRequest(request, requestOptions));
+    }
+
+    private async __getLoanReviewRequest(
+        request: Voltaria.GetLoanReviewRequestRequest,
+        requestOptions?: LoansClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.LoanReviewRequestResponse>> {
+        const { request_id: requestId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/loans/review-requests/${core.url.encodePathParam(requestId)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Voltaria.LoanReviewRequestResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v2/loans/review-requests/{request_id}",
+        );
+    }
+
+    /**
      * Retrieve all loans associated with your partner account. Supports optional filtering by client ID.
      *
      * @param {Voltaria.ListLoansRequest} request

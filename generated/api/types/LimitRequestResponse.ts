@@ -17,6 +17,8 @@ export interface LimitRequestResponse {
     response?: (string | null) | undefined;
     /** The ID of the waiver associated with this limit request */
     waiver_id?: (string | null) | undefined;
+    /** The origin of the request. 'partner' indicates the request was submitted by your account; 'internal' indicates it was initiated by Winyield on your behalf. */
+    source: Voltaria.LimitRequestSourceEnum;
     /** The timestamp when the limit request was created */
     created_at: string;
 }
