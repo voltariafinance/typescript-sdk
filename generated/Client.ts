@@ -9,6 +9,7 @@ import { InstallmentsClient } from "./api/resources/installments/client/Client.j
 import { InvestorsClient } from "./api/resources/investors/client/Client.js";
 import { LoansClient } from "./api/resources/loans/client/Client.js";
 import { PartnersClient } from "./api/resources/partners/client/Client.js";
+import { RecoveriesClient } from "./api/resources/recoveries/client/Client.js";
 import { RepaymentsClient } from "./api/resources/repayments/client/Client.js";
 import { SandboxClient } from "./api/resources/sandbox/client/Client.js";
 import { WebhooksClient } from "./api/resources/webhooks/client/Client.js";
@@ -33,6 +34,7 @@ export class VoltariaClient {
     protected _installments: InstallmentsClient | undefined;
     protected _loans: LoansClient | undefined;
     protected _partners: PartnersClient | undefined;
+    protected _recoveries: RecoveriesClient | undefined;
     protected _webhooks: WebhooksClient | undefined;
     protected _repayments: RepaymentsClient | undefined;
     protected _drawdowns: DrawdownsClient | undefined;
@@ -75,6 +77,10 @@ export class VoltariaClient {
 
     public get partners(): PartnersClient {
         return (this._partners ??= new PartnersClient(this._options));
+    }
+
+    public get recoveries(): RecoveriesClient {
+        return (this._recoveries ??= new RecoveriesClient(this._options));
     }
 
     public get webhooks(): WebhooksClient {

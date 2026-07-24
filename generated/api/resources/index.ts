@@ -16,6 +16,8 @@ export * from "./loans/client/requests/index.js";
 export * as loans from "./loans/index.js";
 export * from "./partners/client/requests/index.js";
 export * as partners from "./partners/index.js";
+export * from "./recoveries/client/requests/index.js";
+export * as recoveries from "./recoveries/index.js";
 export * from "./repayments/client/requests/index.js";
 export * as repayments from "./repayments/index.js";
 export * from "./sandbox/client/requests/index.js";
