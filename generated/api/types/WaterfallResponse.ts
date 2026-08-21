@@ -16,7 +16,7 @@ export interface WaterfallResponse {
     /** The payment amount recorded for the waterfall */
     amount?: (string | null) | undefined;
     /** The currency of the payment */
-    currency?: (string | null) | undefined;
+    currency?: (Voltaria.CurrencyEnum | null) | undefined;
     /** The date the payment was made */
     payment_date?: (string | null) | undefined;
     /** The Presigned URL of the file. This is a temporary URL that allows you to download the file. */
