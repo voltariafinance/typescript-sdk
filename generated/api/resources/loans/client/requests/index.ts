@@ -1,5 +1,6 @@
 export type { BulkLoanCreatePayload } from "./BulkLoanCreatePayload.js";
 export type { DeleteLoanRequest } from "./DeleteLoanRequest.js";
+export type { EarlySettlementPayload } from "./EarlySettlementPayload.js";
 export type { GetBulkLoanStatusRequest } from "./GetBulkLoanStatusRequest.js";
 export type { GetLoanByIdRequest } from "./GetLoanByIdRequest.js";
 export type { GetLoanReviewRequestRequest } from "./GetLoanReviewRequestRequest.js";

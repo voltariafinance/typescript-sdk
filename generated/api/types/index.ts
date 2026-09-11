@@ -35,6 +35,7 @@ export * from "./DocumentResponse.js";
 export * from "./DrawdownChecklistResponse.js";
 export * from "./DrawdownResponse.js";
 export * from "./DrawdownStatusEnum.js";
+export * from "./EarlySettlementResponse.js";
 export * from "./HttpValidationError.js";
 export * from "./InstallmentResponse.js";
 export * from "./InstallmentResponseWithClientInfo.js";

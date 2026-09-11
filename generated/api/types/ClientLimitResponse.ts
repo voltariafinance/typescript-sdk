@@ -3,12 +3,20 @@
 import type * as Voltaria from "../index.js";
 
 export interface ClientLimitResponse {
+    /** The currency the limit is denominated in */
     currency: Voltaria.CurrencyEnum;
+    /** The longest loan maturity this limit allows, in days */
     max_maturity_days: number;
+    /** The credit limit granted to the client */
     limit: string;
+    /** The rate recorded on this limit */
     rate: string;
+    /** Principal currently outstanding against this limit */
     outstanding: string;
+    /** Limit minus outstanding. Negative when the client is over limit */
     available: string;
+    /** When the limit was granted */
     created_at: string;
+    /** When the limit was last changed */
     updated_at: string;
 }

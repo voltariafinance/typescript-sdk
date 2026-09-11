@@ -562,6 +562,90 @@ export class LoansClient {
     }
 
     /**
+     * Calculate the indicative early settlement figure for a loan as of the given settlement date. The amount is indicative only, not a binding quote, and has no validity period — it changes as repayments are recorded and as the settlement date moves. Confirm the final amount with Voltaria before collecting from the borrower.
+     *
+     * @param {Voltaria.EarlySettlementPayload} request
+     * @param {LoansClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.BadRequestError}
+     * @throws {@link Voltaria.ForbiddenError}
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.loans.calculateSettlement({
+     *         loan_id: "loan_id"
+     *     })
+     */
+    public calculateSettlement(
+        request: Voltaria.EarlySettlementPayload,
+        requestOptions?: LoansClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.EarlySettlementResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__calculateSettlement(request, requestOptions));
+    }
+
+    private async __calculateSettlement(
+        request: Voltaria.EarlySettlementPayload,
+        requestOptions?: LoansClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.EarlySettlementResponse>> {
+        const { loan_id: loanId, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/loans/${core.url.encodePathParam(loanId)}/calculate-settlement`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: _body,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Voltaria.EarlySettlementResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Voltaria.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Voltaria.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v2/loans/{loan_id}/calculate-settlement",
+        );
+    }
+
+    /**
      * Create multiple loans in a single request. Processing happens asynchronously. Returns a task ID for tracking progress.
      *
      * @param {Voltaria.BulkLoanCreatePayload} request
