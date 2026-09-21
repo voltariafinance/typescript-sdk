@@ -22,5 +22,7 @@ export * from "./repayments/client/requests/index.js";
 export * as repayments from "./repayments/index.js";
 export * from "./sandbox/client/requests/index.js";
 export * as sandbox from "./sandbox/index.js";
+export * from "./tasks/client/requests/index.js";
+export * as tasks from "./tasks/index.js";
 export * from "./webhooks/client/requests/index.js";
 export * as webhooks from "./webhooks/index.js";

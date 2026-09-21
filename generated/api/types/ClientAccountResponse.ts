@@ -29,6 +29,8 @@ export interface ClientAccountResponse {
     address?: (Voltaria.AccountAddress | null) | undefined;
     /** Account status. One of: `pending`, `active`, `passive`. */
     status: Voltaria.AccountStatusEnum;
+    /** Confirmation of Payee result for this account. `null` when the account has never been checked, or when the check does not apply to it. One of: `matched`, `close_match`, `not_matched`, `account_not_found`, `unavailable`. */
+    cop_status?: (Voltaria.CopStatusEnum | null) | undefined;
     /** Timestamp when the account was created. */
     created_at: string;
 }

@@ -12,6 +12,7 @@ import { PartnersClient } from "./api/resources/partners/client/Client.js";
 import { RecoveriesClient } from "./api/resources/recoveries/client/Client.js";
 import { RepaymentsClient } from "./api/resources/repayments/client/Client.js";
 import { SandboxClient } from "./api/resources/sandbox/client/Client.js";
+import { TasksClient } from "./api/resources/tasks/client/Client.js";
 import { WebhooksClient } from "./api/resources/webhooks/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "./BaseClient.js";
@@ -37,6 +38,7 @@ export class VoltariaClient {
     protected _recoveries: RecoveriesClient | undefined;
     protected _webhooks: WebhooksClient | undefined;
     protected _repayments: RepaymentsClient | undefined;
+    protected _tasks: TasksClient | undefined;
     protected _drawdowns: DrawdownsClient | undefined;
 
     constructor(options: VoltariaClient.Options) {
@@ -89,6 +91,10 @@ export class VoltariaClient {
 
     public get repayments(): RepaymentsClient {
         return (this._repayments ??= new RepaymentsClient(this._options));
+    }
+
+    public get tasks(): TasksClient {
+        return (this._tasks ??= new TasksClient(this._options));
     }
 
     public get drawdowns(): DrawdownsClient {
