@@ -15,6 +15,8 @@ export interface DocumentCreatePayload {
     loan_id?: string | null;
     installment_id?: string | null;
     waterfall_id?: string | null;
+    /** The task this document answers, if any. */
+    task_id?: string | null;
     /** The category of the document. Available options can be fetched from the available categories endpoint. '.../documents/available-categories'. */
     category: string;
     /** The name of the file */

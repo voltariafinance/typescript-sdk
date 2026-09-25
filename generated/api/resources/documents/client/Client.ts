@@ -149,6 +149,7 @@ export class DocumentsClient {
             loan_id: request.loan_id,
             installment_id: request.installment_id,
             waterfall_id: request.waterfall_id,
+            task_id: request.task_id,
         };
         const _body = await core.newFormData();
         _body.append("category", request.category);

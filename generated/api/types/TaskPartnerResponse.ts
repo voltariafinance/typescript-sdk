@@ -12,7 +12,7 @@ export interface TaskPartnerResponse {
     title: string;
     /** Longer description of what needs to be done. */
     description?: (string | null) | undefined;
-    /** The status of the task. One of the following: active, in_progress, blocked, done, cancelled */
+    /** The status of the task. One of the following: active, in_progress, blocked, review_needed, done, cancelled */
     status: Voltaria.TaskStatusEnum;
     /** Task priority. One of the following: low, medium, high, urgent */
     priority?: (Voltaria.TaskPriorityEnum | null) | undefined;
