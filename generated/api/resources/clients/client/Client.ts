@@ -933,6 +933,94 @@ export class ClientsClient {
     }
 
     /**
+     * Retrieve every credit limit granted to a specific client.
+     *
+     * @param {Voltaria.ListClientLimitsRequest} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.listClientLimits({
+     *         client_id: "client_id"
+     *     })
+     */
+    public listClientLimits(
+        request: Voltaria.ListClientLimitsRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.PaginatedResponseClientLimitHistoryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listClientLimits(request, requestOptions));
+    }
+
+    private async __listClientLimits(
+        request: Voltaria.ListClientLimitsRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.PaginatedResponseClientLimitHistoryResponse>> {
+        const { client_id: clientId, page, page_size: pageSize, order_by: orderBy, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            page_size: pageSize,
+            order_by: orderBy,
+            q,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/clients/${core.url.encodePathParam(clientId)}/limits`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Voltaria.PaginatedResponseClientLimitHistoryResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v2/clients/{client_id}/limits",
+        );
+    }
+
+    /**
      * Retrieve detailed information for a specific client using their client ID.
      *
      * @param {Voltaria.GetClientByIdRequest} request

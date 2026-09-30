@@ -7,6 +7,7 @@ export type { GetClientByIdRequest } from "./GetClientByIdRequest.js";
 export type { GetLimitRequestRequest } from "./GetLimitRequestRequest.js";
 export type { LimitRequestCreatePayload } from "./LimitRequestCreatePayload.js";
 export type { ListClientChecklistSummariesRequest } from "./ListClientChecklistSummariesRequest.js";
+export type { ListClientLimitsRequest } from "./ListClientLimitsRequest.js";
 export type { ListClientPortalUsersRequest } from "./ListClientPortalUsersRequest.js";
 export type { ListClientsRequest } from "./ListClientsRequest.js";
 export type { ListClientWaiversRequest } from "./ListClientWaiversRequest.js";
