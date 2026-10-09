@@ -18,7 +18,7 @@ export interface WebhookCreatePayload {
     url: string;
     /** Optional description of this webhook endpoint */
     description?: string | null;
-    /** Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated */
+    /** Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated */
     event_type: Voltaria.WebhookEventTypeEnum;
     /** Secret for signing webhook payloads */
     secret: string;

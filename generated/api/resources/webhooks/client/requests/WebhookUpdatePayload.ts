@@ -20,7 +20,7 @@ export interface WebhookUpdatePayload {
     url?: string | null;
     /** Description of this webhook endpoint */
     description?: string | null;
-    /** Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated */
+    /** Event type to subscribe toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated */
     event_type?: Voltaria.WebhookEventTypeEnum | null;
     /** Status of the webhook subscriptionPossible values: active, paused, disabled */
     status?: Voltaria.WebhookStatusEnum | null;

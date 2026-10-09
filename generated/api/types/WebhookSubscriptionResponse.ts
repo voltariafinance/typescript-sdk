@@ -9,7 +9,7 @@ export interface WebhookSubscriptionResponse {
     url: string;
     /** Description of this webhook endpoint */
     description?: (string | null) | undefined;
-    /** Event type subscribed toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated */
+    /** Event type subscribed toPossible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated */
     event_type: Voltaria.WebhookEventTypeEnum;
     /** Status of the webhook subscriptionPossible values: active, paused, disabled */
     status: Voltaria.WebhookStatusEnum;

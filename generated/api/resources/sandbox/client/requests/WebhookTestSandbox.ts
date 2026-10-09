@@ -11,6 +11,6 @@ import type * as Voltaria from "../../../../index.js";
 export interface WebhookTestSandbox {
     /** The ID of the webhook subscription. Only this webhook will be triggered if provided. */
     webhook_id?: string | null;
-    /** Event type to trigger for the test. All subscriptions for this event type will be triggered if webhook_id is not provided.Possible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated */
+    /** Event type to trigger for the test. All subscriptions for this event type will be triggered if webhook_id is not provided.Possible values: loan_updated, installment_updated, client_updated, client_limit_updated, partner_limit_updated, bank_connection_updated */
     event_type: Voltaria.WebhookEventTypeEnum;
 }

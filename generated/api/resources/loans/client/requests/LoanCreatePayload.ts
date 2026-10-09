@@ -27,6 +27,8 @@ export interface LoanCreatePayload {
     loan_date?: string | null;
     /** List of installments for the loan, each with a due date and amount */
     installments: Voltaria.LoanInstallmentCreatePayload[];
+    /** How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest) */
+    repayment_method?: Voltaria.LoanRepaymentMethodEnum;
     /** Additional data related to the loan */
     data?: Record<string, unknown> | null;
 }

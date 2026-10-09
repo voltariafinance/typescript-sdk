@@ -35,6 +35,8 @@ export interface LoanInvestorResponse {
     early_settlement_date?: (string | null) | undefined;
     /** The settlement amount at early settlement if applicable */
     early_settlement_amount?: (string | null) | undefined;
+    /** How each installment is split into principal and interest */
+    repayment_method: Voltaria.LoanRepaymentMethodEnum;
     /** Additional data related to the loan */
     data?: (Record<string, unknown> | null) | undefined;
     /** The client details associated with the loan */

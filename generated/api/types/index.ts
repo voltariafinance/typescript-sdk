@@ -51,6 +51,7 @@ export * from "./LoanInstallmentCreatePayload.js";
 export * from "./LoanInstallmentResponse.js";
 export * from "./LoanInvestorResponse.js";
 export * from "./LoanPaymentStatusEnum.js";
+export * from "./LoanRepaymentMethodEnum.js";
 export * from "./LoanResponseWithClientInfo.js";
 export * from "./LoanResponseWithInstallments.js";
 export * from "./LoanReviewRequestResponse.js";

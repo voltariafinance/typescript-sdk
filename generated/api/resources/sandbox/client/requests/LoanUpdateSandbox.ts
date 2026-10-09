@@ -10,6 +10,6 @@ import type * as Voltaria from "../../../../index.js";
  */
 export interface LoanUpdateSandbox {
     loan_id: string;
-    /** The status of the client. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, deleted, inactive` */
+    /** The status of the loan. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, inactive`. Use the delete loan endpoint to delete a loan. */
     status?: Voltaria.LoanStatusEnum | null;
 }

@@ -6,5 +6,6 @@ export const WebhookEventTypeEnum = {
     ClientUpdated: "client.updated",
     ClientLimitUpdated: "client.limit.updated",
     PartnerLimitUpdated: "partner.limit.updated",
+    BankConnectionUpdated: "bank_connection.updated",
 } as const;
 export type WebhookEventTypeEnum = (typeof WebhookEventTypeEnum)[keyof typeof WebhookEventTypeEnum];
