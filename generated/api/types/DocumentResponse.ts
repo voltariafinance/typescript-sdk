@@ -11,6 +11,8 @@ export interface DocumentResponse {
     file_type: string;
     /** The associated client ID */
     client_id?: (string | null) | undefined;
+    /** The ID of the client counterparty the document belongs to, if applicable */
+    client_counterparty_id?: (string | null) | undefined;
     /** The Presigned URL of the file. This is a temporary URL that allows you to download the file. */
     file_url?: (string | null) | undefined;
     /** The ID of the associated loan, if applicable */

@@ -1021,6 +1021,252 @@ export class ClientsClient {
     }
 
     /**
+     * Retrieve the counterparties of a specific client, e.g. its debtors or installers.
+     *
+     * @param {Voltaria.ListClientCounterpartiesRequest} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.listClientCounterparties({
+     *         client_id: "client_id"
+     *     })
+     */
+    public listClientCounterparties(
+        request: Voltaria.ListClientCounterpartiesRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.PaginatedResponseClientCounterpartyResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listClientCounterparties(request, requestOptions));
+    }
+
+    private async __listClientCounterparties(
+        request: Voltaria.ListClientCounterpartiesRequest,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.PaginatedResponseClientCounterpartyResponse>> {
+        const { client_id: clientId, page, page_size: pageSize, order_by: orderBy, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            page_size: pageSize,
+            order_by: orderBy,
+            q,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/clients/${core.url.encodePathParam(clientId)}/counterparties`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Voltaria.PaginatedResponseClientCounterpartyResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v2/clients/{client_id}/counterparties",
+        );
+    }
+
+    /**
+     * Add a counterparty to a specific client. It starts with your default counterparty status.
+     *
+     * @param {Voltaria.ClientCounterpartyCreatePayload} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.createClientCounterparty({
+     *         client_id: "client_id",
+     *         name: "Acme Installations Ltd"
+     *     })
+     */
+    public createClientCounterparty(
+        request: Voltaria.ClientCounterpartyCreatePayload,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.ClientCounterpartyResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__createClientCounterparty(request, requestOptions));
+    }
+
+    private async __createClientCounterparty(
+        request: Voltaria.ClientCounterpartyCreatePayload,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.ClientCounterpartyResponse>> {
+        const { client_id: clientId, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/clients/${core.url.encodePathParam(clientId)}/counterparties`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: _body,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Voltaria.ClientCounterpartyResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v2/clients/{client_id}/counterparties",
+        );
+    }
+
+    /**
+     * Update the details of a counterparty of a specific client.
+     *
+     * @param {Voltaria.ClientCounterpartyUpdatePayload} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.NotFoundError}
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.updateClientCounterparty({
+     *         client_id: "client_id",
+     *         counterparty_id: "counterparty_id"
+     *     })
+     */
+    public updateClientCounterparty(
+        request: Voltaria.ClientCounterpartyUpdatePayload,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.ClientCounterpartyResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__updateClientCounterparty(request, requestOptions));
+    }
+
+    private async __updateClientCounterparty(
+        request: Voltaria.ClientCounterpartyUpdatePayload,
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.ClientCounterpartyResponse>> {
+        const { client_id: clientId, counterparty_id: counterpartyId, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                `v2/clients/${core.url.encodePathParam(clientId)}/counterparties/${core.url.encodePathParam(counterpartyId)}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: _body,
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Voltaria.ClientCounterpartyResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 404:
+                    throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "PATCH",
+            "/v2/clients/{client_id}/counterparties/{counterparty_id}",
+        );
+    }
+
+    /**
      * Retrieve detailed information for a specific client using their client ID.
      *
      * @param {Voltaria.GetClientByIdRequest} request
@@ -1247,5 +1493,83 @@ export class ClientsClient {
             "GET",
             "/v2/clients/{client_id}/checklist-summaries",
         );
+    }
+
+    /**
+     * Retrieve the counterparties of all your clients, e.g. their debtors or installers, with each client's name.
+     *
+     * @param {Voltaria.ListAllClientCounterpartiesRequest} request
+     * @param {ClientsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Voltaria.UnprocessableEntityError}
+     *
+     * @example
+     *     await client.clients.listAllClientCounterparties()
+     */
+    public listAllClientCounterparties(
+        request: Voltaria.ListAllClientCounterpartiesRequest = {},
+        requestOptions?: ClientsClient.RequestOptions,
+    ): core.HttpResponsePromise<Voltaria.PaginatedResponseClientCounterpartyWithClientResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__listAllClientCounterparties(request, requestOptions));
+    }
+
+    private async __listAllClientCounterparties(
+        request: Voltaria.ListAllClientCounterpartiesRequest = {},
+        requestOptions?: ClientsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Voltaria.PaginatedResponseClientCounterpartyWithClientResponse>> {
+        const { page, page_size: pageSize, order_by: orderBy, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            page_size: pageSize,
+            order_by: orderBy,
+            q,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VoltariaEnvironment.Sandbox,
+                "v2/client-counterparties",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Voltaria.PaginatedResponseClientCounterpartyWithClientResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new Voltaria.UnprocessableEntityError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.VoltariaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/client-counterparties");
     }
 }

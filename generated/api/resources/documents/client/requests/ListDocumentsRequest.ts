@@ -13,6 +13,6 @@ export interface ListDocumentsRequest {
     page_size?: number | null;
     /** Field to order the results by, e.g., 'created_at:desc,updated_at:asc' */
     order_by?: string | null;
-    /** Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null. */
+    /** Query string for filtering. Format: "field:operator:value;...". Supported fields: id, client_id, loan_id, installment_id, waterfall_id, client_counterparty_id, category, file_name, document_date, folder_path. Supported operators: is, in, not_in, contains, not_contains, like, not_like, ilike, not_ilike, gt, gte, lt, lte, starts_with, ends_with, is_null, is_not_null. */
     q?: string | null;
 }

@@ -146,6 +146,7 @@ export class DocumentsClient {
     ): Promise<core.WithRawResponse<Voltaria.DocumentResponse>> {
         const _queryParams: Record<string, unknown> = {
             client_id: request.client_id,
+            client_counterparty_id: request.client_counterparty_id,
             loan_id: request.loan_id,
             installment_id: request.installment_id,
             waterfall_id: request.waterfall_id,

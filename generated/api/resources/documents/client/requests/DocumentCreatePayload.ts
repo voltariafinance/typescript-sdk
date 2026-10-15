@@ -12,6 +12,8 @@ import type * as core from "../../../../../core/index.js";
  */
 export interface DocumentCreatePayload {
     client_id?: string | null;
+    /** The ID of the client counterparty this document belongs to, if any. Requires `client_id`; the counterparty must belong to that client. */
+    client_counterparty_id?: string | null;
     loan_id?: string | null;
     installment_id?: string | null;
     waterfall_id?: string | null;

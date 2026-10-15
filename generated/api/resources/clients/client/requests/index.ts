@@ -1,4 +1,6 @@
 export type { ApproveOnboardingRequest } from "./ApproveOnboardingRequest.js";
+export type { ClientCounterpartyCreatePayload } from "./ClientCounterpartyCreatePayload.js";
+export type { ClientCounterpartyUpdatePayload } from "./ClientCounterpartyUpdatePayload.js";
 export type { ClientCreatePayload } from "./ClientCreatePayload.js";
 export type { ClientDataCreatePayload } from "./ClientDataCreatePayload.js";
 export type { ClientUserInviteRequest } from "./ClientUserInviteRequest.js";
@@ -6,7 +8,9 @@ export type { DeleteClientRequest } from "./DeleteClientRequest.js";
 export type { GetClientByIdRequest } from "./GetClientByIdRequest.js";
 export type { GetLimitRequestRequest } from "./GetLimitRequestRequest.js";
 export type { LimitRequestCreatePayload } from "./LimitRequestCreatePayload.js";
+export type { ListAllClientCounterpartiesRequest } from "./ListAllClientCounterpartiesRequest.js";
 export type { ListClientChecklistSummariesRequest } from "./ListClientChecklistSummariesRequest.js";
+export type { ListClientCounterpartiesRequest } from "./ListClientCounterpartiesRequest.js";
 export type { ListClientLimitsRequest } from "./ListClientLimitsRequest.js";
 export type { ListClientPortalUsersRequest } from "./ListClientPortalUsersRequest.js";
 export type { ListClientsRequest } from "./ListClientsRequest.js";

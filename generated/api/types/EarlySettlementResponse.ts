@@ -7,8 +7,8 @@ export interface EarlySettlementResponse {
     settlement_date: string;
     /** The settlement amount at early settlement */
     settlement_amount: string;
-    /** The internal rate of return at early settlement */
-    settlement_irr: string;
+    /** The internal rate of return at early settlement; null when it is more than 3 times the loan's IRR, e.g. a minimum fee paid within days */
+    settlement_irr: string | null;
     /** The original internal rate of return before early settlement */
     original_irr?: (string | null) | undefined;
     /** The minimum fee applicable at early settlement */
