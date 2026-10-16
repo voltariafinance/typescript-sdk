@@ -37,6 +37,8 @@ export interface LoanResponseWithClientInfo {
     early_settlement_amount?: (string | null) | undefined;
     /** How each installment is split into principal and interest */
     repayment_method: Voltaria.LoanRepaymentMethodEnum;
+    /** The ID of the client counterparty the loan relates to, if applicable */
+    client_counterparty_id?: (string | null) | undefined;
     /** Additional data related to the loan */
     data?: (Record<string, unknown> | null) | undefined;
     /** The client details associated with the loan */

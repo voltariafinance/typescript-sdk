@@ -29,6 +29,8 @@ export interface LoanCreatePayload {
     installments: Voltaria.LoanInstallmentCreatePayload[];
     /** How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest) */
     repayment_method?: Voltaria.LoanRepaymentMethodEnum;
+    /** The ID of the client counterparty this loan relates to. It must belong to the loan's client. */
+    client_counterparty_id?: string | null;
     /** Additional data related to the loan */
     data?: Record<string, unknown> | null;
 }
