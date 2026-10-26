@@ -3,5 +3,6 @@
 export const LoanRepaymentMethodEnum = {
     Pmt: "pmt",
     ConstantPrincipal: "constant_principal",
+    Custom: "custom",
 } as const;
 export type LoanRepaymentMethodEnum = (typeof LoanRepaymentMethodEnum)[keyof typeof LoanRepaymentMethodEnum];

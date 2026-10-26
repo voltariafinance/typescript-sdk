@@ -1,6 +1,6 @@
 {
   "name": "voltaria-sdk",
-  "version": "2.48.1",
+  "version": "2.49.0",
   "description": "Official TypeScript SDK for the Voltaria API",
   "type": "module",
   "main": "./dist/src/index.js",

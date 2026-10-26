@@ -15,7 +15,7 @@ export interface BulkLoanItemPayload {
     loan_date?: (string | null) | undefined;
     /** List of installments for the loan, each with a due date and amount */
     installments: Voltaria.LoanInstallmentCreatePayload[];
-    /** How each installment is split into principal and interest: pmt (amortising) or constant_principal (loan amount divided equally across installments, the rest is interest) */
+    /** How each installment is split into principal and interest: pmt (amortising), constant_principal (loan amount divided equally across installments, the rest is interest) or custom (you send each installment's principal and interest; total principal must equal the loan amount, and the loan amount and installments cannot be changed later) */
     repayment_method?: Voltaria.LoanRepaymentMethodEnum | undefined;
     /** The ID of the client counterparty this loan relates to. It must belong to the loan's client. */
     client_counterparty_id?: (string | null) | undefined;

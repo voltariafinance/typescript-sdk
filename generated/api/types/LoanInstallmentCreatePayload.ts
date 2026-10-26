@@ -5,6 +5,10 @@ export interface LoanInstallmentCreatePayload {
     expected_repayment_at: string;
     /** The amount due for this installment */
     amount: LoanInstallmentCreatePayload.Amount;
+    /** The principal part of the installment amount. Only when creating a loan with repayment_method custom, together with interest */
+    principal?: (LoanInstallmentCreatePayload.Principal | null) | undefined;
+    /** The interest part of the installment amount. Only when creating a loan with repayment_method custom, together with principal */
+    interest?: (LoanInstallmentCreatePayload.Interest | null) | undefined;
 }
 
 export namespace LoanInstallmentCreatePayload {
@@ -12,4 +16,12 @@ export namespace LoanInstallmentCreatePayload {
      * The amount due for this installment
      */
     export type Amount = number | string;
+    /**
+     * The principal part of the installment amount. Only when creating a loan with repayment_method custom, together with interest
+     */
+    export type Principal = number | string;
+    /**
+     * The interest part of the installment amount. Only when creating a loan with repayment_method custom, together with principal
+     */
+    export type Interest = number | string;
 }
