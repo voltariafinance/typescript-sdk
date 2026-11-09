@@ -31,6 +31,8 @@ export interface ClientAccountResponse {
     status: Voltaria.AccountStatusEnum;
     /** Confirmation of Payee result for this account. `null` when the account has never been checked, or when the check does not apply to it. One of: `matched`, `close_match`, `not_matched`, `account_not_found`, `unavailable`. */
     cop_status?: (Voltaria.CopStatusEnum | null) | undefined;
+    /** Bank the sort code belongs to, from the account's Confirmation of Payee check. `null` when no check has named the bank: the account has never been checked, the check does not apply to it, or the provider returned no bank. */
+    bank_name?: (string | null) | undefined;
     /** Timestamp when the account was created. */
     created_at: string;
 }
