@@ -12,4 +12,10 @@ export interface LoanUpdateSandbox {
     loan_id: string;
     /** The status of the loan. One of the following: `pending, overdue, active, default, sold, restructured, repaid, pre_approved, rejected, inactive`. Use the delete loan endpoint to delete a loan. */
     status?: Voltaria.LoanStatusEnum | null;
+    /** The date the loan was sold. Required when the status changes to `sold`; can't be later than today or earlier than the loan date */
+    sold_at?: string | null;
+    /** The date the loan was restructured. Required when the status changes to `restructured`; can't be later than today or earlier than the loan date */
+    restructured_at?: string | null;
+    /** The date the loan defaulted. Required when the status changes to `default`; can't be later than today or earlier than the loan date */
+    defaulted_at?: string | null;
 }

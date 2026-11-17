@@ -104,11 +104,12 @@ export class SandboxClient {
     }
 
     /**
-     * Update the status of a specific loan using its unique loan ID.
+     * Update the status of a specific loan using its unique loan ID. Moving a loan to sold, restructured or default needs its sale, restructure or default date in the same request.
      *
      * @param {Voltaria.LoanUpdateSandbox} request
      * @param {SandboxClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Voltaria.BadRequestError}
      * @throws {@link Voltaria.NotFoundError}
      * @throws {@link Voltaria.UnprocessableEntityError}
      *
@@ -163,6 +164,8 @@ export class SandboxClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Voltaria.BadRequestError(_response.error.body as unknown, _response.rawResponse);
                 case 404:
                     throw new Voltaria.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 422:
